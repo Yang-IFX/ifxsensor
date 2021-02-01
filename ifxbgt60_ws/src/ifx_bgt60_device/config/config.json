@@ -1,0 +1,23 @@
+{
+    "device_config": {
+        "fmcw_scene": {
+            "rx_antennas": [3],
+            "tx_antennas": [1],
+            "tx_power_level": 7,
+            "if_gain_dB": 33,
+            "range_resolution_m": 0.05,
+            "max_range_m": 5.0,
+            "max_speed_m_s": 3.54,
+            "speed_resolution_m_s": 0.312,
+            "frame_repetition_time_s": 0.04
+        }
+    },
+    "presence_sensing":
+    {
+        "min_detection_range_m": 0.2,
+        "max_detection_range_m": 1,
+        "range_hysteresis_percentage": 20,
+        "absence_confirm_count": 3,
+        "presence_confirm_count": 3
+    }
+}

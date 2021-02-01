@@ -1,0 +1,51 @@
+<!--
+/* ===========================================================================
+** Copyright (c) 2020, Infineon Technologies AG All rights reserved.
+**
+** Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are met:
+**     * Redistributions of source code must retain the above copyright
+**       notice, this list of conditions and the following disclaimer.
+**     * Redistributions in binary form must reproduce the above copyright
+**       notice, this list of conditions and the following disclaimer in the
+**       documentation and/or other materials provided with the distribution.
+**     * Neither the name of the <organization> nor the
+**       names of its contributors may be used to endorse or promote products
+**       derived from this software without specific prior written permission.
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+** ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+** DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+** LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+** ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+** SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** ===========================================================================
+*/
+-->
+
+<launch clear_params="true">
+
+    <!-- declare args to be passed in -->
+    <arg name="dev_config_file" default="$(find ifx_bgt60_device)/config/config.json" />
+    <!-- <arg name="dev_uuid"        default="CustomDevice1234" /> -->
+    <arg name="dev_uuid"        default="" />
+    <arg name="frame_id"        default="default frame id" />
+    <arg name="pub_topic_name"  default="/ifx_bgt60_device/ifx_bgt60_raw_data_msg" />
+    <arg name="pub_topic_size"  default="100" />
+
+    <group ns="ifx_bgt60_device" clear_params="true">
+        <node pkg="ifx_bgt60_device" type="ifx_bgt60_device_node" name="ifx_bgt60_device_node" output="screen" clear_params="true">
+            <!-- set a private parameter for the node -->
+            <param name="dev_config_file" value="$(arg dev_config_file)" type="str"/>
+            <param name="dev_uuid"        value="$(arg dev_uuid)"        type="str"/>
+            <param name="frame_id"        value="$(arg frame_id)"        type="str"/>
+            <param name="pub_topic_name"  value="$(arg pub_topic_name)"  type="str"/>
+            <param name="pub_topic_size"  value="$(arg pub_topic_size)"  type="int"/>
+        </node>
+    </group>
+
+</launch>
