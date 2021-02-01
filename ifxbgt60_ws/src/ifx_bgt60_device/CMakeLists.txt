@@ -72,6 +72,16 @@ set(RDK_LIB
 add_message_files(
     FILES
     ifx_bgt60_raw_data.msg
+
+    ifx_bgt60_register_dump.msg
+
+    ifx_bgt60_chirp_obj.msg
+    ifx_bgt60_shape_obj.msg
+    ifx_bgt60_fmcw_shape_set.msg
+    ifx_bgt60_config.msg
+
+    ifx_bgt60_fmcw_single_shape.msg
+    ifx_bgt60_single_shape_config.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -153,6 +163,9 @@ add_library(${PROJECT_NAME}_lib
     src/ifx_bgt60_device_node.cpp
     src/ifx_bgt60_device_node_impl.cpp
     src/ifx_bgt60_raw_data_publisher.cpp
+    # src/ifx_bgt60_config_publisher.cpp
+    src/ifx_bgt60_single_shape_config_publisher.cpp
+    src/ifx_bgt60_register_dump_publisher.cpp
     ${RDK_SRC}
 )
 
@@ -211,35 +224,33 @@ target_link_libraries(${PROJECT_NAME}_node
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node
-#    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(TARGETS ${PROJECT_NAME}_node
+#     RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-install(TARGETS ${PROJECT_NAME}_lib
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+# install(TARGETS ${PROJECT_NAME}_lib
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-)
+# )
 
 ## Mark cpp header files for installation
-install(DIRECTORY include/${PROJECT_NAME}/
+# install(DIRECTORY include/${PROJECT_NAME}/
 #     DIRCTORY ${CMAKE_CURRENT_SOURCE_DIR}/inc/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
-   PATTERN ".svn" EXCLUDE
-   PATTERN ".git" EXCLUDE
-)
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+# #   PATTERN ".svn" EXCLUDE
+# )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/config/config.json
-    ${CMAKE_CURRENT_SOURCE_DIR}/launch/ifx_radar_device.launch
+# install(FILES
+#     ${CMAKE_CURRENT_SOURCE_DIR}/config/config.json
+#     ${CMAKE_CURRENT_SOURCE_DIR}/launch/ifx_bgt60_device.launch
 #     # myfile2
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+#     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
 
 #############
 ## Testing ##

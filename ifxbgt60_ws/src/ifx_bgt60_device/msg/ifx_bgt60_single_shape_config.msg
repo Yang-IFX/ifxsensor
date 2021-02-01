@@ -30,9 +30,14 @@
 # Not used for the moment.
 Header header
 
-# The number of register.
-uint8       number
 
-# The register values.
-uint32[]    values
+# Types for which the configuration is applicable.
+# Valid entries are "BGT60TR13" and "BGT60ATR24"
+string device_type
+
+# Unique ids (uuids) of applicable radar sensors
+string device_uuid
+
+# Configuration with full control over the shape configuration.
+ifx_bgt60_fmcw_single_shape single_shape
 

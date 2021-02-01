@@ -1,5 +1,5 @@
 /* ===========================================================================
-** Copyright (c) 2020, Infineon Technologies AG All rights reserved.
+** Copyright (c) 2021, Infineon Technologies AG All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions are met:
@@ -12,10 +12,10 @@
 **       names of its contributors may be used to endorse or promote products
 **       derived from this software without specific prior written permission.
 **
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-** ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-** DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+** ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
 ** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 ** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 ** LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -40,6 +40,8 @@
 
 #include "ifx_bgt60_device_handle.h"
 #include "ifx_bgt60_raw_data_publisher.h"
+#include "ifx_bgt60_single_shape_config_publisher.h"
+#include "ifx_bgt60_register_dump_publisher.h"
 
 
 namespace ifx
@@ -68,8 +70,11 @@ private:
 
     ros::NodeHandle _ros_node;
     bool            _running = {false};
-    std::unique_ptr<RadarDeviceHandle>  _dev_handle = { nullptr };
-    std::unique_ptr<RadarPublisher>     _publisher = { nullptr };
+    std::unique_ptr<RadarDeviceHandle>          _dev_handle = { nullptr };
+    std::unique_ptr<Bgt60RawDataPublisher>      _raw_data_pub = { nullptr };
+    std::unique_ptr<Bgt60SingleShapeConfigPublisher>
+                                    _single_shape_config_pub = { nullptr };
+    std::unique_ptr<Bgt60RegisterDumpPublisher> _reg_dump_pub = { nullptr };
 };
 
 } // namespace ifx

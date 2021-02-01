@@ -25,41 +25,51 @@
 # ===========================================================================
 #
 
-# Type of shape. Valid values are "up", "up-down", "down-up", "down".
-string      type
 
-# Number of repetitions of the shape. This number must be a power of 2.
-uint32      num_repetitions
+# Bitmask where each bit represents one RX antenna of the radar device. If a bit
+# is set the according RX antenna is enabled during the chirps and the signal
+# received through that antenna is captured. The least significant bit
+# corresponds to antenna 1.
+uint32      rx_antennas_mask
 
-# Power mode after end of the shape set. Valid values are "active",
-# "idle", "deep sleep", and "deep sleep continue".
-string      following_power_mode
-
-# Delay after end of shape set in seconds.
-float32     end_delay_s
-
-# Lower frequency of the FMCW chirp in Hz.
-uint32      lower_frequency_Hz
-
-# Upper frequency of the FMCW chirp in Hz.
-uint32      upper_frequency_Hz
+# Bitmask where each bit represents one TX antenna. Defines like above rx_mask
+uint32      tx_antennas_mask
 
 # The value determines the power of the emitted signal. Higher values correspond
-# to higher power settings. The values do not directly correspond to a physical quantity.
-# Allowed values are [0-31].
-uint32      tx_power_level
+# to higher power settings. The values do not directly correspond to a physical
+# quantity. Allowed values are [0-31].
+uint8       tx_power_level
 
-# Gain of high pass filter in dB. Allowed values are [18, 30].
-# The total gain is given as the sum of hp_gain_dB and vga_gain_dB.
-uint32      hp_gain_level
+# Amplification factor in decibel that is applied to the IF signal coming from
+# the RF mixer before it is fed into the analog-to-digital converter (ADC).
+# Allowed values are [18-31].
+uint8       if_gain_dB
 
-# Gain of integrated gain adjustment circuitry in dB. Allowed values are [0,5,10,15,20,25,30].
-# The total gain is given as the sum of hp_gain_dB and vga_gain_dB.
-float32     vga_gain_level
+# Lower frequency of the FMCW chirp in Hz.
+uint64      lower_frequency_Hz
 
-# Settings for up chirp. Setting is ignored if type is "down". In this case the setting can be omitted.
-ifx_bgt60_chirp_obj     up_chirp
+# Upper frequency of the FMCW chirp in Hz.
+uint64      upper_frequency_Hz
 
-# Settings for down chirp. Setting is ignored if type is "up". In this case the setting can be omitted.
-ifx_bgt60_chirp_obj     down_chirp
+# Number of chirps in a single frame.
+uint32      num_chirps_per_frame
 
+# Number of samples in a single chirp (data frame).
+uint32      num_samples_per_chirp
+
+# Time between the start of two consecutive chirps in a frame in seconds. Also
+# known as chirp-to-chirp time or pulse repetition time.
+float32     chirp_repetition_time_s
+
+# Time between two consecutive frame in seconds and the inverse of the frame
+# rate. Also known as frame period or frame time.
+float32     frame_repetition_time_s
+
+# Configuration of mimo mode. Possible values are:
+#   1. "off": MIMO is disabled.
+#   2. "tdm": Time-division multiplexing. This value is currently only allowed
+#       with ATR24C with both transmitting antennas enabled.
+string      mimo_mode
+
+# Sample rate of the analog-to-digital converter (ADC) in Hz.
+uint32      sample_rate_Hz

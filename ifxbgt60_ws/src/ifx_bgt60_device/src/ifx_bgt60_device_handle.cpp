@@ -1,5 +1,5 @@
 /* ===========================================================================
-** Copyright (c) 2020, Infineon Technologies AG All rights reserved.
+** Copyright (c) 2021, Infineon Technologies AG All rights reserved.
 **
 ** Redistribution and use in source and binary forms, with or without
 ** modification, are permitted provided that the following conditions are met:
@@ -12,10 +12,10 @@
 **       names of its contributors may be used to endorse or promote products
 **       derived from this software without specific prior written permission.
 **
-** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-** ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-** DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+** ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
 ** DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 ** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 ** LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -30,7 +30,7 @@
 #include "ifx_bgt60_device_handle.h"
 
 /* coming from radar_sdk/apps/c/common */
-#include "json.h"
+#include "json.hpp"
 
 
 using namespace ifx;
@@ -51,70 +51,98 @@ RadarDeviceHandle::~RadarDeviceHandle()
 bool
 RadarDeviceHandle::init(const std::string& config_file,
                         const std::string& frame_id,
-                        const std::string& uuid,
+                        bool dump_register,
                         int ring_buff_size)
 {
-    ifx_Device_Config_t dev_config = { 0 };
-    {
-        ifx_json_t* json = ifx_json_create();
-        if (!json)
-        {
-            ROS_ERROR_STREAM("Cannot create JSON structure");
-            return false;
-        }
-
-        if (!config_file.empty())
-        {
-            /* read configuration from json file */
-            bool ret = ifx_json_load_from_file(json, config_file.c_str());
-            if (!ret)
-            {
-                ROS_ERROR_STREAM("Error parsing configuration file " << config_file << ": " << ifx_json_get_error(json));
-                return false;
-            }
-
-            if (ifx_json_has_config_single_shape(json))
-            {
-                ret = ifx_json_get_device_config_single_shape(json, &dev_config);
-                if (!ret)
-                {
-                    ROS_ERROR_STREAM("Error parsing fmcw_single_shape configuration: " << ifx_json_get_error(json));
-                    return false;
-                }
-            }
-            else if (ifx_json_has_config_scene(json))
-            {
-                ifx_Device_Metrics_t scene_config;
-                ret = ifx_json_get_device_config_scene(json, &scene_config);
-                if (!ret)
-                {
-                    ROS_ERROR_STREAM("Error parsing fmcw_scene configuration: " << ifx_json_get_error(json));
-                    return false;
-                }
-
-                ifx_device_translate_metrics_to_config(NULL, &scene_config, &dev_config);
-                if (ifx_error_get() != IFX_OK)
-                {
-                    ROS_ERROR_STREAM("Error converting scene to device configuration");
-                    return false;
-                }
-            }
-        }
-
-        ifx_json_destroy(json);
-    }
-
     _frame_id = frame_id;
 
-    if(uuid.empty())
+    ifx_Device_Config_t dev_config = { 0 };
+    auto single_shape_config =
+            std::make_unique<ifx_bgt60_device::ifx_bgt60_single_shape_config>();
+
+    ifxJsonConfiguration json = ifxJsonConfiguration();
+    try
     {
-        _dev = ifx_device_create();
+        json.load_from_file(config_file);
+    }
+    catch (const std::string& reason)
+    {
+        ROS_ERROR_STREAM("Error loading json file " << config_file << ": " << reason);
+        return false;
+    }
+
+    // open device
+    if (json.has_device())
+    {
+        for (auto& uuid : json.get_device_uuids())
+        {
+            _dev = ifx_device_create_by_uuid(uuid.data());
+
+            // we found the device
+            if (_dev)
+            {
+                char suuid[36];
+                ifx_util_uuid_to_string(uuid.data(), suuid);
+                single_shape_config->device_uuid = std::string(suuid);
+                break;
+            }
+        }
+
+        if (!_dev)
+        {
+            ROS_ERROR_STREAM("Could not find device with matching uuid.");
+            return false;
+        }
     }
     else
     {
-        _dev = ifx_device_create_by_uuid(reinterpret_cast<const uint8_t*>(uuid.c_str()));
-        ROS_INFO_STREAM("Create device of uuid: " << uuid);
+        _dev = ifx_device_create();
+
+        if (!_dev)
+        {
+            ROS_ERROR_STREAM("Could not find any device.");
+            return false;
+        }
     }
+
+    // get configuration
+    if (json.has_config_fmcw_scene())
+    {
+        ifx_Device_Metrics_t metrics = {};
+        json.get_config_fmcw_scene(&metrics);
+
+        ifx_device_translate_metrics_to_config(_dev, &metrics, &dev_config);
+    }
+    else if (json.has_config_fmcw_single_shape())
+    {
+        json.get_config_fmcw_single_shape(&dev_config);
+    }
+    else
+    {
+        ROS_ERROR_STREAM("No device configuration in json file.");
+        ifx_device_destroy(_dev);
+        return false;
+    }
+
+    ros::Time current_time = ros::Time::now();
+    single_shape_config->header.stamp.sec = current_time.sec;
+    single_shape_config->header.stamp.nsec = current_time.nsec;
+    single_shape_config->header.frame_id = frame_id;
+
+    /* `device_type` reserved for future */
+    // single_shape_config->device_type = "BGT60ATR24";
+
+    single_shape_config->single_shape.rx_antennas_mask = dev_config.rx_mask;
+    single_shape_config->single_shape.tx_antennas_mask = dev_config.tx_mask;
+    single_shape_config->single_shape.tx_power_level = dev_config.tx_power_level;
+    single_shape_config->single_shape.if_gain_dB = dev_config.if_gain_dB;
+    single_shape_config->single_shape.lower_frequency_Hz = dev_config.lower_frequency_Hz;
+    single_shape_config->single_shape.upper_frequency_Hz = dev_config.upper_frequency_Hz;
+    single_shape_config->single_shape.num_chirps_per_frame = dev_config.num_chirps_per_frame;
+    single_shape_config->single_shape.num_samples_per_chirp = dev_config.num_samples_per_chirp;
+    single_shape_config->single_shape.chirp_repetition_time_s = dev_config.chirp_repetition_time_s;
+    single_shape_config->single_shape.frame_repetition_time_s = dev_config.frame_repetition_time_s;
+
 
     ifx_device_set_config(_dev, &dev_config);
 
@@ -134,9 +162,16 @@ RadarDeviceHandle::init(const std::string& config_file,
         return false;
     }
 
-    _buff = std::make_shared<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_raw_data> > >();
-
+    _buff_raw = std::make_shared<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_raw_data> > >();
+    _buff_cfg = std::make_shared<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_single_shape_config> > >();
+    _dump_register = dump_register;
+    if(_dump_register)
+    {
+        _buff_reg = std::make_shared<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_register_dump> > >();
+    }
     _running = true;
+
+    _buff_cfg->write(std::move(single_shape_config));
 
     _get_data_thread = std::thread(&RadarDeviceHandle::getData, this);
 
@@ -152,6 +187,11 @@ RadarDeviceHandle::getData()
     ifx_error_clear();
     while(_running)
     {
+        /**
+         * @brief Step 1: get raw data
+         *
+         */
+        ROS_DEBUG_STREAM("RadarDeviceHandle::getData get_next_frame");
         ret = ifx_device_get_next_frame(_dev, _frame);
         if(ret == IFX_ERROR_FIFO_OVERFLOW)
         {
@@ -164,6 +204,7 @@ RadarDeviceHandle::getData()
             break;
         }
 
+        ROS_DEBUG_STREAM("RadarDeviceHandle::getData moving data to buffer");
         /* create ifx_bgt60_device::ifx_bgt60_raw_data from ifx_Frame_t */
         auto radar_data = std::make_unique<ifx_bgt60_device::ifx_bgt60_raw_data>();
 
@@ -193,9 +234,34 @@ RadarDeviceHandle::getData()
             }
         }
 
-        _buff->write(std::move(radar_data));
+        _buff_raw->write(std::move(radar_data));
 
-        ROS_DEBUG_STREAM("getData: get one frame, push to buff");
+        ROS_DEBUG_STREAM("RadarDeviceHandle::getData push to buff done");
+
+        /**
+         * @brief Step 2 (optional): get dumped register value
+         *
+         */
+        if(_dump_register)
+        {
+            ROS_DEBUG_STREAM("RadarDeviceHandle::getData get_dumped_register");
+            uint32_t registers[256];
+            uint8_t num_register = 0;
+            ret = ifx_device_get_dumped_registers(_dev, registers, &num_register);
+
+            auto register_dump = std::make_unique<ifx_bgt60_device::ifx_bgt60_register_dump>();
+            register_dump->header.stamp.sec = current_time.sec;
+            register_dump->header.stamp.nsec = current_time.nsec;
+            register_dump->header.frame_id = _frame_id;
+            register_dump->number = num_register;
+            register_dump->values.assign(num_register, 0);
+            for(uint8_t num = 0; num < num_register; ++num)
+            {
+                register_dump->values[num] = registers[num];
+            }
+
+            _buff_reg->write(std::move(register_dump));
+        }
     }
 }
 

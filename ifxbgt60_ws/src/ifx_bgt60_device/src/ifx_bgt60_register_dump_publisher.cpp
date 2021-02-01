@@ -25,13 +25,52 @@
 ** ===========================================================================
 */
 
-#include "ifx_bgt60_device/ifx_bgt60_device_node.h"
-
-#include "ifx_bgt60_device_node_impl.h"
+#include "ifx_bgt60_register_dump_publisher.h"
 
 using namespace ifx;
 
-std::unique_ptr<Bgt60DeviceNode> Bgt60DeviceNode::createBgt60DeviceNode()
+Bgt60RegisterDumpPublisher::~Bgt60RegisterDumpPublisher()
 {
-    return std::move(std::make_unique<Bgt60DeviceNodeImpl>());
+    _running = false;
+    if(_pub_thread.joinable())
+        _pub_thread.join();
+}
+
+bool
+Bgt60RegisterDumpPublisher::init(ros::NodeHandle& node,
+                     const std::string& pub_topic_name,
+                     const int pub_queue_size,
+                     std::shared_ptr<RingBuffer<std::unique_ptr<
+                          ifx_bgt60_device::ifx_bgt60_register_dump> > > buff)
+{
+    _buff = buff;
+    _publisher = node.advertise<ifx_bgt60_device::ifx_bgt60_register_dump>(
+                            pub_topic_name,
+                            pub_queue_size);
+    _running = true;
+
+    _pub_thread = std::thread(&Bgt60RegisterDumpPublisher::publishData, this);
+
+    ROS_DEBUG_STREAM("Initialize ifx::Bgt60RegisterDumpPublisher succeed with publish topic name: " <<
+                        pub_topic_name << ", and message size: " << pub_queue_size);
+
+    return _running;
+}
+
+void
+Bgt60RegisterDumpPublisher::publishData()
+{
+    while(_running)
+    {
+        ROS_DEBUG_STREAM("ifx::Bgt60RegisterDumpPublisher waiting for dumped register data...");
+        std::unique_ptr<ifx_bgt60_device::ifx_bgt60_register_dump> data = std::move(_buff->read());
+        ifx_bgt60_device::ifx_bgt60_register_dump reg_data;
+        reg_data.header.stamp = data->header.stamp;
+        reg_data.header.frame_id = data->header.frame_id;
+        reg_data.number = data->number;
+        reg_data.values.swap(data->values);
+
+        _publisher.publish(reg_data);
+        ROS_DEBUG_STREAM("ifx::Bgt60RegisterDumpPublisher publish one message.");
+    }
 }

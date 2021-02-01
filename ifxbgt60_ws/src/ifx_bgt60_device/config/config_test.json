@@ -1,13 +1,8 @@
 {
-    "device": {
-        "types": [ "BGT60TR24" ],
-        "uuids": [ "a1f02f1a-1663-4362-1d79-02926fc3e69a" ]
-
-    },
     "device_config": {
         "fmcw_single_shape": {
-            "rx_antennas": [1,2,3,4],
-            "tx_antennas": [1,2],
+            "rx_antennas": [3],
+            "tx_antennas": [1],
             "tx_power_level": 30,
             "if_gain_dB": 30,
             "lower_frequency_Hz": 59e9,
@@ -15,9 +10,15 @@
             "num_chirps_per_frame": 64,
             "num_samples_per_chirp": 32,
             "chirp_repetition_time_s": 0.001,
-            "frame_repetition_time_s": 0.1,
-            "mimo_mode": "tdm",
-            "sample_rate_Hz": 2000000
+            "frame_repetition_time_s": 0.1
         }
+    },
+    "presence_sensing":
+    {
+        "min_detection_range_m": 0.2,
+        "max_detection_range_m": 1,
+        "range_hysteresis_percentage": 20,
+        "absence_confirm_count": 3,
+        "presence_confirm_count": 3
     }
 }

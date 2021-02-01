@@ -1,5 +1,5 @@
 # ===========================================================================
-# Copyright (c) 2020, Infineon Technologies AG All rights reserved.
+# Copyright (c) 2021, Infineon Technologies AG All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -12,10 +12,10 @@
 #       names of its contributors may be used to endorse or promote products
 #       derived from this software without specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
 # DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 # (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 # LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -26,14 +26,14 @@
 #
 
 # Array of integers with activated RX antennas. E.g., to activate RX antennas 1 and 3: [1,3]
-uint8_t[]   rx_antennas
+uint8[]     rx_antennas
 
 # Array of integers with activated TX antennas. E.g., to activate TX antennas 1 and 2: [1,2]
-uint8_t[]   tx_antennas
+uint8[]     tx_antennas
 
 # Number of samples in the chirp.
-uint32_t    num_samples
+uint32      num_samples
 
 # Delay after end of chirp in seconds.
-float       end_delay_s
+float32     end_delay_s
 

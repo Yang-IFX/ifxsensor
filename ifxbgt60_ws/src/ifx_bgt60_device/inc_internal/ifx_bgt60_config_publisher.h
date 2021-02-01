@@ -25,14 +25,14 @@
 ** ===========================================================================
 */
 /**
- * @file ifx_bgt60_raw_data_publisher.h
+ * @file ifx_bgt60_config_publisher.h
  *
  * @brief Publish raw data in the form of customized message type
- *        'ifx_bgt60_device/ifx_bgt60_raw_data'
+ *        'ifx_bgt60_device/ifx_bgt60_config'
  */
 
-#ifndef IFX_BGT60_RAW_DATA_PUBLISHER_H_
-#define IFX_BGT60_RAW_DATA_PUBLISHER_H_
+#ifndef IFX_BGT60_CONFIG_PUBLISHER_H_
+#define IFX_BGT60_CONFIG_PUBLISHER_H_
 
 
 #include <ros/ros.h>
@@ -40,7 +40,7 @@
 #include <memory>
 
 /* Generated message header file */
-#include <ifx_bgt60_device/ifx_bgt60_raw_data.h>
+#include <ifx_bgt60_device/ifx_bgt60_config.h>
 
 #include "ifx_ring_buffer.h"
 
@@ -48,19 +48,19 @@
 namespace ifx
 {
 
-class Bgt60RawDataPublisher
+class Bgt60ConfigPublisher
 {
 public:
     /**
      * @brief Construct a new Radar Publisher object
      */
-    Bgt60RawDataPublisher() = default;
+    Bgt60ConfigPublisher() = default;
     /**
      * @brief Destroy the Radar Publisher object
      */
-    ~Bgt60RawDataPublisher();
+    ~Bgt60ConfigPublisher();
     /**
-     * @brief Initialize Bgt60RawDataPublisher object
+     * @brief Initialize Bgt60ConfigPublisher object
      *
      * @param node              Associated ROS node
      * @param pub_topic_name    Publish topic name
@@ -73,7 +73,7 @@ public:
               const std::string& pub_topic_name,
               const int pub_queue_size,
               std::shared_ptr<RingBuffer<std::unique_ptr<
-                ifx_bgt60_device::ifx_bgt60_raw_data> > > buff);
+                ifx_bgt60_device::ifx_bgt60_config> > > buff);
     /**
      * @brief Get initialization status
      */
@@ -90,8 +90,8 @@ private:
     ros::Publisher  _publisher;
     std::thread     _pub_thread;
 
-    std::shared_ptr<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_raw_data> > > _buff = { nullptr };
+    std::shared_ptr<RingBuffer<std::unique_ptr<ifx_bgt60_device::ifx_bgt60_config> > > _buff = { nullptr };
 };
 
 } // namespace ifx
-#endif // IFX_BGT60_RAW_DATA_PUBLISHER
+#endif // IFX_BGT60_CONFIG_PUBLISHER
