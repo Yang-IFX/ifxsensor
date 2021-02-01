@@ -26,7 +26,7 @@ set(RDK_INCLUDE_DIR
 )
 
 set(RDK_LINK_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/lib/sensor_sdk/libs/ubuntu_server_x64_raspi
+    ${CMAKE_CURRENT_LIST_DIR}/lib/sensor_sdk/libs/linux_x64
 )
 
 file(GLOB RDK_SRC
