@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.6)
 project(ifx_bgt60_device)
+
+include(CheckLibraryExists)
+include(${CMAKE_CURRENT_SOURCE_DIR}/TargetPlatform.cmake)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
@@ -25,8 +28,15 @@ set(RDK_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/sensor_sdk/3rd_party/libs/argparse
 )
 
+# detect target platform
+detect_target_platform(TARGET_PLATFORM)
+
+if(${TARGET_PLATFORM} MATCHES "unknown")
+    message(ERROR "Platform not supported")
+endif()
+
 set(RDK_LINK_DIR
-    ${CMAKE_CURRENT_LIST_DIR}/lib/sensor_sdk/libs/linux_x64
+    ${CMAKE_CURRENT_LIST_DIR}/lib/sensor_sdk/libs/${TARGET_PLATFORM}
 )
 
 file(GLOB RDK_SRC
