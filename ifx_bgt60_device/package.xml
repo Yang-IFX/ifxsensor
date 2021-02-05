@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ifx_bgt60_device</name>
-  <version>0.0.1</version>
+  <version>0.0.0</version>
   <description>The ifx_bgt60_device package</description>
   <maintainer email="Yang.Wu@infineon.com">Yang Wu</maintainer>
-  <license>TODO</license>
+  <license>ECL2.0</license>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
