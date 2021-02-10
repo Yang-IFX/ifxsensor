@@ -1,5 +1,5 @@
 # ifxbgt60dev
-This repository provides the ROS based software support for Infineonös sensor products.
+This repository provides the ROS based software support for Infineon's sensor products.
 
 # Package(s)
 ## ifx_bgt60_device 
