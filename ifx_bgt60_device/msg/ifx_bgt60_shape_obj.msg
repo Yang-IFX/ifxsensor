@@ -68,3 +68,9 @@ ifx_bgt60_chirp_obj     up_chirp
 # Settings for down chirp. Setting is ignored if type is "up". In this case the setting can be omitted.
 ifx_bgt60_chirp_obj     down_chirp
 
+# /**
+#
+#
+# * @}
+#
+# */

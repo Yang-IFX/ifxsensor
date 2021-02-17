@@ -78,3 +78,10 @@ string      mimo_mode
 
 # Sample rate of the analog-to-digital converter (ADC) in Hz.
 uint32      sample_rate_Hz
+
+# /**
+#
+#
+# * @}
+#
+# */

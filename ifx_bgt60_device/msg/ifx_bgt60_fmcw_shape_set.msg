@@ -47,3 +47,9 @@ uint32      sample_rate_Hz
 # have more than 4 elements.
 ifx_bgt60_shape_obj[]   shape_objs
 
+# /**
+#
+#
+# * @}
+#
+# */

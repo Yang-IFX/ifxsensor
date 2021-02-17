@@ -46,3 +46,9 @@ string device_uuid
 # Configuration with full control over the shape configuration.
 ifx_bgt60_fmcw_single_shape single_shape
 
+# /**
+#
+#
+# * @}
+#
+# */
