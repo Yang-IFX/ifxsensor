@@ -1,4 +1,5 @@
 # ifxsensor
+**Be aware that this software comes without any security claims and shall be used for evaluation purpose**  
 This repository provides the ROS based software support for Infineon's sensor products.
 
 # Package(s)
