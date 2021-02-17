@@ -117,3 +117,9 @@ private:
 
 } // namespace ifx
 #endif // IFX_RING_BUFFER_H_
+/**
+
+
+* @}
+
+*/

@@ -150,3 +150,9 @@ Bgt60DeviceNodeImpl::init()
 
     return _running;
 }
+/**
+
+
+* @}
+
+*/

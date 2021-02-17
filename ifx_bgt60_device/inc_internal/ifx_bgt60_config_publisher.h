@@ -100,3 +100,9 @@ private:
 
 } // namespace ifx
 #endif // IFX_BGT60_CONFIG_PUBLISHER
+/**
+
+
+* @}
+
+*/

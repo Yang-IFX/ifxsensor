@@ -43,3 +43,9 @@ std::unique_ptr<Bgt60DeviceNode> Bgt60DeviceNode::createBgt60DeviceNode()
 {
     return std::move(std::make_unique<Bgt60DeviceNodeImpl>());
 }
+/**
+
+
+* @}
+
+*/

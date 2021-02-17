@@ -273,5 +273,10 @@ RadarDeviceHandle::getData()
         }
     }
 }
+/**
 
+
+* @}
+
+*/
 
