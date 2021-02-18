@@ -85,9 +85,7 @@ Bgt60RawDataPublisher::publishData()
         ROS_DEBUG_STREAM("ifx::Bgt60RawDataPublisher publish one message.");
     }
 }
+
 /**
-
-
 * @}
-
 */

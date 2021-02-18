@@ -1,27 +1,39 @@
-/* ===========================================================================
-** Copyright (C) 2019-2020 Infineon Technologies AG. All rights reserved.
-** ===========================================================================
-**
-** ===========================================================================
-** Infineon Technologies AG (INFINEON) is supplying this file for use
-** exclusively with Infineon's sensor products. This file can be freely
-** distributed within development tools and software supporting such
-** products.
-**
-** THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
-** OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
-** MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
-** INFINEON SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR DIRECT, INDIRECT,
-** INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES, FOR ANY REASON
-** WHATSOEVER.
-** ===========================================================================
-*/
 /**
- * @file raw_data_defaults.h
- *
- * @brief This file defines the default configuration values for raw data app.
- *
- */
+* \copyright
+* MIT License
+*
+* Copyright (c) 2020 Infineon Technologies AG
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE
+*
+* \endcopyright
+*
+* \author Infineon Technologies AG
+*
+* \file raw_data_defaults.h
+*
+* \brief   This file defines the default configuration values for raw data app.
+*
+*
+* @{
+*/
+
 
 #ifndef RAW_DATA_DEFAULTS_H
 #define RAW_DATA_DEFAULTS_H
@@ -59,3 +71,7 @@
 #define IFX_FRAME_REPETITION_TIME_S             ((ifx_Float_t)1 / IFX_FRAME_RATE_HZ)  /**< Frame-rate in Hz to period in microseconds calculation */
 
 #endif /* RAW_DATA_DEFAULTS_H */
+
+/**
+* @}
+*/

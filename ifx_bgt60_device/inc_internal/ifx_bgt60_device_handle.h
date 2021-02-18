@@ -136,9 +136,7 @@ private:
 
 } // namespace ifx
 #endif // IFX_BGT60_DEVICE_HANDLE_H_
+
 /**
-
-
 * @}
-
 */

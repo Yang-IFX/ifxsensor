@@ -99,9 +99,7 @@ private:
 
 } // namespace ifx
 #endif // IFX_BGT60_RAW_DATA_PUBLISHER
+
 /**
-
-
 * @}
-
 */

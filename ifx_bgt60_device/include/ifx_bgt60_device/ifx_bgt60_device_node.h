@@ -65,9 +65,7 @@ public:
 
 } // namespace ifx
 #endif // IFX_BGT60_DEVICE_NODE_H_
+
 /**
-
-
 * @}
-
 */

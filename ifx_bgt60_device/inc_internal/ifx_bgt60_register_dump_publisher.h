@@ -99,9 +99,7 @@ private:
 
 } // namespace ifx
 #endif // IFX_BGT60_REGISTER_DUMP_PUBLISHER
+
 /**
-
-
 * @}
-
 */

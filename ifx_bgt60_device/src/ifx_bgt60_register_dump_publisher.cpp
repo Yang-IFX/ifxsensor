@@ -82,9 +82,7 @@ Bgt60RegisterDumpPublisher::publishData()
         ROS_DEBUG_STREAM("ifx::Bgt60RegisterDumpPublisher publish one message.");
     }
 }
+
 /**
-
-
 * @}
-
 */

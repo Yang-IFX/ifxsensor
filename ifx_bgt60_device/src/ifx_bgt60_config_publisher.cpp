@@ -88,9 +88,7 @@ Bgt60ConfigPublisher::publishData()
         // break;
     }
 }
+
 /**
-
-
 * @}
-
 */
