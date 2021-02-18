@@ -27,9 +27,6 @@
 *
 * \author Infineon Technologies AG
 *
-*
-* @{
-*/
 -->
 
 <launch clear_params="true">
@@ -62,11 +59,3 @@
 
 </launch>
 
-<!--
-/**
-
-
-* @}
-
-*/
--->
