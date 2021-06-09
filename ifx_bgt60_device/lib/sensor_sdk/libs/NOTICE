@@ -1,3 +1,3 @@
-All binary files here have [fftw](https://fftw.org/) (or partly) built inside.
-Infineon has bought commercial license for internal use, as well as external
-distribution.
+All binary files here have [FFTW](https://fftw.org/) (or partly) built inside.
+Infineon Technologies AG has purchased FFTW commercial license for internal use,
+as well as external distribution.
